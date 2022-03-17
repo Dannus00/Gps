@@ -1,0 +1,47 @@
+.container{
+
+  display: grid;
+  text-align: center;
+  border: 1px hidden rgb(241, 241, 245);
+  padding: 0.5px;
+  margin: 0%;
+  float:center; 
+
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.container div{
+
+  border: 1px solid black;
+
+}
+
+
+.dive{
+
+ background-color: gainsboro;
+ color: brown;
+}
+
+#mape{
+  padding: 19.9%;
+  float: center;
+ }
+
+
+
+ #subt{
+   text-align: center;
+   border: 1px  solid black;
+   padding: 0.5px;
+   margin: auto;
+   float: center;
+   background-color: gainsboro;
+   color: brown;
+   
+ }
+ #bod{
+   margin: 0.5%;
+   background-color: rgb(143, 238, 206);
+ }
+
