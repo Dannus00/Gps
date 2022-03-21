@@ -14,11 +14,13 @@ var con = mysql.createConnection({
   user: "mess",
   password:"danus371",
   database: "message",
+  socket:"C:/xampp/mysql/mysql.sock",
 
   host: "localhost", 
   user: "message", 
   password:"danus371",
-  database: "message"
+  database: "message",
+  port: 3306
 });
 
 con.connect(function(err) {
