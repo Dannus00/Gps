@@ -10,17 +10,12 @@ const PRT = 20000;
 app.use(express.static(path.join(__dirname, "public")));
 
 var con = mysql.createConnection({
-  host: "52.2.220.177",
-  user: "mess",
-  password:"danus371",
-  database: "message",
-  socket:"C:/xampp/mysql/mysql.sock",
 
   host: "localhost", 
   user: "message", 
   password:"danus371",
   database: "message",
-  port: 3306
+  
 });
 
 con.connect(function(err) {
