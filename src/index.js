@@ -11,10 +11,14 @@ app.use(express.static(path.join(__dirname, "public")));
 
 var con = mysql.createConnection({
 
-  host: "localhost", 
-  user: "message", 
+  //host: "localhost", 
+  //user: "message", 
+  //password:"danus371",
+  //database: "message",
+  host: "database-node.c2tavwobf7hs.us-east-1.rds.amazonaws.com",
+  user: "admin",
   password:"danus371",
-  database: "message",
+  database: "mensaje"
   
 });
 
@@ -39,7 +43,7 @@ Server.on('message', (msg, rinfo) => {
     });
     const [latitud, longitud, direccion, hora, fecha] = arrayValues;
 
-    var sql = `INSERT INTO mensaje (latitud,longitud,direccion,hora,fecha) VALUES ('${latitud}', '${longitud}', '${direccion}','${hora}','${fecha}')`;  
+    var sql = `INSERT INTO Datos (latitud,longitud,direccion,hora,fecha) VALUES ('${latitud}', '${longitud}', '${direccion}','${hora}','${fecha}')`;  
       con.query(sql, function (err, result) {  
         if (err) throw err;  
         console.log("Localizacion Guardada");  
@@ -63,7 +67,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/data', (req, res) => {
   console.log(true)
  
-  con.query('select * from mensaje ORDER BY id DESC LIMIT 1',(err,mess, fields)=>{
+  con.query('select * from Datos ORDER BY id DESC LIMIT 1',(err,mess, fields)=>{
     
       res.status(200).json({
       data: mess[0]
