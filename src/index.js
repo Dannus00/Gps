@@ -2,43 +2,24 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const PORT = 3000;
-const mongoose = require('mongoose');
+const mysql = require('mysql');
 const dgram = require('dgram');
 const Server = dgram.createSocket('udp4');
 const HOST = '0.0.0.0';
 const PRT = 20000;
 app.use(express.static(path.join(__dirname, "public")));
 
-let Msj
-
-const dbCredentials = {
-  user: 'Danus',
-  password: 'eiLPIwy4uEUXcwmc',
-  cluster: 'cluster0.3mjix',
-  db: 'test',
-}
-
-mongoose.connect(
-  `mongodb+srv://${dbCredentials.user}:${dbCredentials.password}@${dbCredentials.cluster}.mongodb.net/${dbCredentials.db}?retryWrites=true&w=majority`
-);
-
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error: "));
-db.once("open", function () {
-  console.log("database connected!");
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "message", 
+  password:"danus371",
+  database: "message"
 });
-//=============================================================
-const MessageSchema = mongoose.Schema(
-  {
-    latitud: String,
-    longitud: String,
-    direccion: String,
-    hora: String,
-    fecha: String,
-  },
-  { timestamps: true }
-);
-const Message = mongoose.model("Message", MessageSchema);
+
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
 
 //=============================================================
 Server.on('error', (err) => {
@@ -56,16 +37,11 @@ Server.on('message', (msg, rinfo) => {
     });
     const [latitud, longitud, direccion, hora, fecha] = arrayValues;
 
-     const message = new Message({
-      latitud,
-      longitud,
-      direccion,
-      hora,
-      fecha
-     });
-    message.save();
-
-
+    var sql = `INSERT INTO mensaje (latitud,longitud,direccion,hora,fecha) VALUES ('${latitud}', '${longitud}', '${direccion}','${hora}','${fecha}')`;  
+      con.query(sql, function (err, result) {  
+        if (err) throw err;  
+        console.log("Localizacion Guardada");  
+        });   
 });
 
 
@@ -84,15 +60,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/data', (req, res) => {
   console.log(true)
-  Message.findOne({}, {}, { sort: { 'createdAt': -1 } }, function (err, message) {
-
-    console.log(message);
-    res.status(200).json({
-      data: message,
+ 
+  con.query('select * from mensaje ORDER BY id DESC LIMIT 1',(err,mess, fields)=>{
+    
+      res.status(200).json({
+      data: mess[0]
       
     });
-    
-  });
+    })
+
 });
  
 app.listen(PORT, () => {
