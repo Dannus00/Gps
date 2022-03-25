@@ -2,7 +2,7 @@
  const map = L.map('mape');
  map.setView([10.9023415, -74.8109302],12);
  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
+ 
 
 const latitudElement = document.getElementById('latitudValue');
 const longitudElement = document.getElementById('longitudValue');
@@ -10,6 +10,8 @@ const direccionElement = document.getElementById('direccionValue');
 const horaElement = document.getElementById('horaValue');
 const fechaElement = document.getElementById('fechaValue');
 var marker
+var array = [];
+var gps ={};
 
 function fetchMessage() {
     fetch('/data')
@@ -25,17 +27,21 @@ function fetchMessage() {
         horaElement.innerHTML = hora;
         fechaElement.innerHTML= fecha;
     
-        //======================//
-       
-        var lat = latitud;
-        var long = longitud;
-        
-       
-        
-        marker = L.marker([lat, long]).bindPopup('Usted esta aqui').addTo(map);
-       
-     
+        //Polylinea y marcador a tiempo real//
+        gps= [[latitud,longitud]];
 
+        for(var i=0; i<1;i++){
+           var tr= gps[i];
+           array.push(tr);
+           console.log(array)
+        }
+
+        var polyline = L.polyline(array, {color: 'blue'}).addTo(map);
+        marker = L.marker([latitud, longitud]).bindPopup('Usted esta aqui').addTo(map);
+
+
+        //=====================//
+       
       });
 
 

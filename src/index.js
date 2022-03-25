@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const PORT = 3000;
+require('dotenv').config();
 const mysql = require('mysql');
 const dgram = require('dgram');
 const Server = dgram.createSocket('udp4');
@@ -11,14 +12,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 var con = mysql.createConnection({
 
-  //host: "localhost", 
-  //user: "message", 
-  //password:"danus371",
-  //database: "message",
-  host: "database-node.c2tavwobf7hs.us-east-1.rds.amazonaws.com",
-  user: "admin",
-  password:"danus371",
-  database: "mensaje"
+  host: process.env.H,
+  user: process.env.U,
+  password:process.env.P,
+  database: process.env.dB
   
 });
 
@@ -70,9 +67,11 @@ app.get('/data', (req, res) => {
   con.query('select * from Datos ORDER BY id DESC LIMIT 1',(err,mess, fields)=>{
     
       res.status(200).json({
-      data: mess[0]
+      data: mess[0],
+      
       
     });
+    
     })
 
 });
