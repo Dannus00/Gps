@@ -19,9 +19,29 @@
       
 
       <section id="user">
-  
+        <div id="control">
+           <div class="control-format">
+             <form>
+
+              <label for="calendar">fecha inicial:</label>
+                <input id="calendar" class="form-control" type="datetime-local" placeholder="Select DateTime">
+
+             </form>
+            </div>
+
+             <div id="c2" class="control-format">
+              <form>
+ 
+                 <label for="calendarF">fecha final: </label>
+                 <input id="calendarF" class="form-control" type="datetime-local" placeholder="Select DateTime">
+              </form>
+
+             </div>
             
-            <a id="ruta" href="http://localhost:3000/history.html" target="_blank">Ruta Historica</a>
+            </div>
+
+            <button id="boton">TRAZAR RUTA HISTORICA</button>
+            
           </section>
       
 
@@ -61,7 +81,7 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 
   <script src="/js/main.js" type="module" ></script>
- 
+  
 
   
 </body>
