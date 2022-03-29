@@ -1,47 +1,128 @@
-.container{
+/* General */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  max-height: 2000px;
+  max-width: 1500px;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-  display: grid;
+body{
+  margin: 0.1%;
+  height: 99%;
+  width: auto;
+  background-color: blueviolet;
+ }
+
+h1{
   text-align: center;
-  border: 1px hidden rgb(241, 241, 245);
-  padding: 0.5px;
-  margin: 0%;
-  float:center; 
+  color: blueviolet;
+  
+  font-weight: bold;
+}
 
+input{
+  color: blueviolet;
+  font-weight: bold;
+
+}
+label{
+  text-align: center;
+  color: blueviolet;
+  font-weight: bold;
+}
+header{
+  height: 5%;
+  background-color: gainsboro;
+  border-radius: 1em;
+  margin: 0.2%;
+  border: solid black ;
+ 
+}
+
+
+#user{
+  display: grid;
+  height: 30%;
+  background-color:gainsboro;
+  margin: 0.2%;
+  border-radius: 1em;
+  margin: 0.1%;
+  border: solid black ;
+  text-align: center;
+  color: brown;
   grid-template-columns: 1fr 1fr 1fr;
 }
-
-.container div{
-
-  border: 1px solid black;
-
+#principal{
+  height: 55%;
+  margin: 0.5%;
+  border-radius: 1em;
 }
 
+#param{
+  height: 10%;
+  margin: 0.5%;
+  margin-top: 0.5%;
+  border-radius: 1em;
+  
+}
+
+#tabla{
+
+  height: 50%;
+ 
+  display: grid;
+  text-align: center;
+  border: 1px solid black;
+  grid-template-columns: 1fr 1fr 1fr;
+  font-size: 20px;
+  
+}
 
 .dive{
-
  background-color: gainsboro;
- color: brown;
+ color: blueviolet;
+ border: 1px solid black;
+ font-weight: bold;
 }
 
 #mape{
-  padding: 19.9%;
-  float: center;
+  padding: 20%;
+  border-radius: 1em;
+  border: solid black;
  }
 
+.control-format{
+ margin: 0.5%;
+ width: 100%;
+ margin: 0.5%;
+ width: 100%;
+ padding: 1px 5px;
+}
+#c2{
+  margin-left: 1.5%;
+}
 
+#control{
+height: auto;
+width: 100%;
+}
 
- #subt{
-   text-align: center;
-   border: 1px  solid black;
-   padding: 0.5px;
-   margin: auto;
-   float: center;
-   background-color: gainsboro;
-   color: brown;
-   
- }
- #bod{
-   margin: 0.5%;
-   background-color: rgb(143, 238, 206);
- }
+button{
+  font-weight: bold;
+  width: auto;
+  margin: 0.5%;
+  
+  border-radius: 10px;
+  background-color: blueviolet;
+}
+button:hover{
+  background-color: rgb(109, 240, 126);
+}
 
+#ruta{
+ 
+  font-size: 1.3em;
+
+}

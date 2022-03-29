@@ -9,9 +9,9 @@ const longitudElement = document.getElementById('longitudValue');
 const direccionElement = document.getElementById('direccionValue');
 const horaElement = document.getElementById('horaValue');
 const fechaElement = document.getElementById('fechaValue');
-var marker
-var array = [];
-var gps ={};
+let marker = null;
+let line = null;
+let array = [];
 
 function fetchMessage() {
     fetch('/data')
@@ -27,30 +27,34 @@ function fetchMessage() {
         horaElement.innerHTML = hora;
         fechaElement.innerHTML= fecha;
     
-        //Polylinea y marcador a tiempo real//
-        gps= [[latitud,longitud]];
+     
+    
+        let Gps = new L.LatLng(latitud, longitud)
+        array.push(Gps);
 
-        for(var i=0; i<1;i++){
-           var tr= gps[i];
-           array.push(tr);
-           console.log(array)
-        }
+       
+        var customIcon = new L.Icon({
+                iconUrl: '/js/view/coche-de-turismo.png',
+                iconSize: [40, 40],
+                
+                
+                
+            });
 
-        var polyline = L.polyline(array, {color: 'blue'}).addTo(map);
-        marker = L.marker([latitud, longitud]).bindPopup('Usted esta aqui').addTo(map);
+        
 
+        if (marker) marker.setLatLng(Gps)
+        else marker = L.marker(Gps, {icon: customIcon}).bindPopup('Usted está aquí').addTo(map)
+
+        if(line) line.setLatLngs(array)
+        else line = L.polyline(array, {color: 'blue'}).addTo(map);
+        //(`latitud: ${latitud}`)
 
         //=====================//
        
       });
 
-
-         if(marker){
-            map.removeLayer(marker)
-
-         }
-     
-
-      
   }
   setInterval(fetchMessage, 5000) ;
+
+  
