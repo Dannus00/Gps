@@ -107,6 +107,12 @@ app.post('/api',(req,res)=>{
 
 });
 
+app.post("/push",(req,res)=>{
+
+console.log("push")
+res.sendStatus(200)
+})
+
 
 app.get('/histo', (req, res) => {
   
