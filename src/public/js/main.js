@@ -93,7 +93,9 @@ function fetchMessage() {
   let date = null
   let hi =[];
   let pol = null;
-  const btn = document.querySelector("button");
+  let pol2 = null;
+  const btn = document.getElementById("boton");
+  const btn2 = document.getElementById("boton2");
   
   document.getElementById("calendar").addEventListener("change", function() {
       let input = this.value;
@@ -112,7 +114,7 @@ function fetchMessage() {
   
   
   
-    btn.addEventListener("click", async function(){
+    btn.addEventListener("click",  function(){
       if (time1 == null || time2 == null) {
 
        alert('Por favor ingresar fechas')
@@ -133,18 +135,7 @@ function fetchMessage() {
            body: JSON.stringify(date)
   
   
-      }).then(res => res.json())
-      .then(res => {
-        if (res.success) {
-          //mensaje correcto
-          
-        }else{
-        //mensaje de error
-        }
       })
-      .catch(function() {
-        console.log("tienes tremendo error papu");
-      });
   
       fetchHisto();
       
@@ -173,24 +164,73 @@ function fetchMessage() {
           console.log(task_names)
   
           if(pol) pol.setLatLngs(task_names)
-        else pol = L.polyline(task_names, {color: 'blue'}).addTo(map);
+        else pol = L.polyline(task_names, {color: 'red'}).addTo(map);
      
           /* pol = L.polyline(task_names, {color: 'red'}).addTo(map); */
         });
   
     }
 
+    let vecth = [];
 
-    map.on('click', function(e) {
+
+    map.on('click',  function(e) {
       let xd = new L.LatLng(e.latlng.lat, e.latlng.lng)
       
-      L.marker([e.latlng.lat,  e.latlng.lng]).bindPopup(`Latitud:  ${e.latlng.lat}, longitud: ${ e.latlng.lng}`).addTo(map);
+      /* L.marker([e.latlng.lat,  e.latlng.lng]).bindPopup(`Latitud:  ${e.latlng.lat}, longitud: ${ e.latlng.lng}`).addTo(map); */
     
-      console.log(xd)
+      
+   /*   L.popup().setLatLng(xd).setContent('Ubicacion seleccionada').openOn(map); */
+     vecth = [e.latlng.lat,e.latlng.lng] 
 
 
   }); 
 
+  btn2.addEventListener("click", function(){
+
+      
+    fetch('/histo2',{
+      headers: {
+       'Content-Type': 'application/json'
+
+      },
+      method: 'POST',
+      body: JSON.stringify(vecth)
+
+
+    })
+
+
+    fetchHisto2()
+
+  });
+
+
+  function fetchHisto2() {
+    fetch('/api2')
+    .then(response => {
+      return response.json();
+    })
+    .then(json => {
+
+      var h2  = json.data;
+    
+
+      var task = [];
+   
+      for (var i = 0, max = h2.length; i < max; i += 1) {
+    
+          task.push([h2[i].latitud,h2[i].longitud]);
+       
+      }
+
+      console.log(task)
+
+      if(pol2) pol2.setLatLngs(task)
+    else pol2 = L.polyline(task, {color: 'purple'}).addTo(map);
+
+    });
+  }
 
    
 
