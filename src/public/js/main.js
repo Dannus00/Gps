@@ -1,7 +1,8 @@
 
  const map = L.map('mape');
- map.setView([10.9023415, -74.8109302],12);
+ map.setView([10.972990, -74.796790],12);
  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
  
 
 const latitudElement = document.getElementById('latitudValue');
@@ -20,12 +21,25 @@ function fetchMessage() {
       })
       .then(json => {
 
-        const {longitud, latitud, direccion, hora, fecha}   = json.data;
+        const {longitud, latitud, direccion,fecha}   = json.data;
         latitudElement.innerText = latitud;
         longitudElement.innerHTML = longitud;
         direccionElement.innerHTML = direccion;
-        horaElement.innerHTML = hora;
-        fechaElement.innerHTML= fecha;
+
+        const opciones = {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          timeZone: 'UTC'
+        };
+
+       var fech = new Date(fecha)
+      
+      var fechaFormateada = fech.toLocaleDateString("es-CO", opciones);
+      var result = fech.toLocaleTimeString('en-US')
+        horaElement.innerHTML = result; 
+        fechaElement.innerHTML= fechaFormateada; 
     
      
     
@@ -46,62 +60,69 @@ function fetchMessage() {
         if (marker) marker.setLatLng(Gps)
         else marker = L.marker(Gps, {icon: customIcon}).bindPopup('Usted está aquí').addTo(map)
 
+
         if(line) line.setLatLngs(array)
         else line = L.polyline(array, {color: 'blue'}).addTo(map);
-        //(`latitud: ${latitud}`)
-
-        //=====================//
        
-      });
+        let followTimer
+        let target
+
+        const follow = (e) => {
+              stop(e)
+              target = e.sourceTarget
+              followTimer = setTimeout(() => map.setView(target._latlng), 1000)
+          } 
+
+        const stop = (e) => {
+           
+            clearTimeout(followTimer);
+            }
+
+        map.on('zoomend', stop)
+        map.on('dragstart', stop)
+        marker.on('click', follow)
+       
+        });
 
   }
   setInterval(fetchMessage, 5000) ;
 
-  let fechaFormateada = null;
-  let result = null;
-  let fechaFormateada2 = null;
-  let result2 = null;
+  let time1 = null;
+  let time2 = null;
+
   let date = null
   let hi =[];
   let pol = null;
   const btn = document.querySelector("button");
-  const opciones = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      timeZone: 'UTC'
-    };
   
   document.getElementById("calendar").addEventListener("change", function() {
       let input = this.value;
-      let dateEntered = new Date(input);
+      time1 =  Date.parse(input)
     
-      fechaFormateada = dateEntered.toLocaleDateString("es-CO", opciones);
-      result = dateEntered.toLocaleTimeString('en-US')
-      console.log(fechaFormateada);
-      console.log(result); 
+   
       
     });
     
     document.getElementById("calendarF").addEventListener("change", function() {
       let input2 = this.value;
-      let dateEntered2 = new Date(input2);
-  
-      fechaFormateada2 = dateEntered2.toLocaleDateString("es-CO", opciones);
-      result2 = dateEntered2.toLocaleTimeString('en-US')
-      console.log(fechaFormateada2);
-      console.log(result2); 
-  
-      
+       time2 =  Date.parse(input2)
       
       
     });
   
   
   
-    btn.addEventListener("click",function(){
-      date = [fechaFormateada, result, fechaFormateada2,result2];
+    btn.addEventListener("click", async function(){
+      if (time1 == null || time2 == null) {
+
+       alert('Por favor ingresar fechas')
+
+    } else if (time1 > time2) {
+      alert('La fecha inicial es mayor a la fecha final, por favor corrija las fechas. ')
+    }
+      date = [time1, time2];
+
+
     
       fetch('/api',{
            headers: {
@@ -151,18 +172,28 @@ function fetchMessage() {
   
           console.log(task_names)
   
-  
-       /*    console.log(longitud)
-          console.log(latitud)
-          console.log(direccion)
-          console.log(hora)
-          console.log(fecha) */
-  
-          pol = L.polyline(task_names, {color: 'red'}).addTo(map);
+          if(pol) pol.setLatLngs(task_names)
+        else pol = L.polyline(task_names, {color: 'blue'}).addTo(map);
+     
+          /* pol = L.polyline(task_names, {color: 'red'}).addTo(map); */
         });
   
     }
-    //setInterval(fetchHisto, 5000) ;
-   
+
+
+    map.on('click', function(e) {
+      let xd = new L.LatLng(e.latlng.lat, e.latlng.lng)
+      
+      L.marker([e.latlng.lat,  e.latlng.lng]).bindPopup(`Latitud:  ${e.latlng.lat}, longitud: ${ e.latlng.lng}`).addTo(map);
+      
+      
+
+     
+      console.log(xd)
+
+
+  }); 
+
+
    
 

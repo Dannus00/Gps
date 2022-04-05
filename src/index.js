@@ -10,10 +10,10 @@ const HOST = '0.0.0.0';
 const PRT = 20000;
 const bodyparser = require('body-parser');
 
+
 let fini = 0;
-let hini = 0;
 let fifin = 0;
-let  hfin = 0;
+
 
 app.use(bodyparser.urlencoded({extended: false}));
 app.use(bodyparser.json());
@@ -47,9 +47,9 @@ Server.on('message', (msg, rinfo) => {
       const value = element.split(': ')[1];
       arrayValues.push(value);
     });
-    const [latitud, longitud, direccion, hora, fecha] = arrayValues;
+    const [latitud, longitud, direccion,fecha] = arrayValues;
 
-    var sql = `INSERT INTO Datos (latitud,longitud,direccion,hora,fecha) VALUES ('${latitud}', '${longitud}', '${direccion}','${hora}','${fecha}')`;  
+    var sql = `INSERT INTO Datos (latitud,longitud,direccion,fecha) VALUES ('${latitud}', '${longitud}', '${direccion}','${fecha}')`;  
       con.query(sql, function (err, result) {  
         if (err) throw err;  
         console.log("Localizacion Guardada");  
@@ -88,14 +88,10 @@ app.get('/data', (req, res) => {
 app.post('/api',(req,res)=>{
 
     fini = req.body[0]
-    hini = req.body[1]
-    fifin = req.body[2]
-    hfin = req.body[3]
+    fifin = req.body[1]
+
    
-    console.log(fini)
-    console.log(hini)
-    console.log(fifin)
-    console.log(hfin)
+    
 
   
 
@@ -109,7 +105,7 @@ app.get('/histo', (req, res) => {
   
 
   con.query(`SELECT latitud,longitud FROM Datos
-  WHERE fecha BETWEEN '${fini}' AND '${fifin}' AND hora BETWEEN "${hini}" AND "${hfin}" ORDER BY id`,(err,mesh, fields)=>{
+  WHERE fecha BETWEEN '${fini}' AND '${fifin}'  ORDER BY id`,(err,mesh, fields)=>{
     
       res.status(200).json({
         data: mesh,

@@ -16,6 +16,7 @@
     "flatpickr": "^4.6.11",
     "git": "^0.1.5",
     "init": "^0.1.2",
+    "leaflet-geosearch": "^3.6.0",
     "mongoose": "^6.2.3",
     "mysql": "^2.18.1",
     "php": "^1.0.2"
