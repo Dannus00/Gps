@@ -11,6 +11,7 @@ const PRT = 20000;
 const bodyparser = require('body-parser');
 
 
+
 let fini = 0;
 let fifin = 0;
 
@@ -100,6 +101,13 @@ app.post('/api',(req,res)=>{
 
 });
 
+app.post("/push",(req,res)=>{
+
+console.log("push")
+res.sendStatus(200)
+})
+
+//holaaa//
 
 app.get('/histo', (req, res) => {
   
