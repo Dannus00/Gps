@@ -2,7 +2,7 @@
  const map = L.map('mape');
  map.setView([10.972990, -74.796790],12);
  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
+var select = false
  
 
 const latitudElement = document.getElementById('latitudValue');
@@ -11,8 +11,12 @@ const direccionElement = document.getElementById('direccionValue');
 const horaElement = document.getElementById('horaValue');
 const fechaElement = document.getElementById('fechaValue');
 let marker = null;
+let marker2 = null;
 let line = null;
 let array = [];
+let slider = document.getElementById('his');
+let task = [];
+let timestamp = [];
 
 function fetchMessage() {
     fetch('/data')
@@ -58,34 +62,40 @@ function fetchMessage() {
         
 
         if (marker) marker.setLatLng(Gps)
-        else marker = L.marker(Gps, {icon: customIcon}).bindPopup('Usted está aquí').addTo(map)
+        else{
+          marker = L.marker(Gps, {icon: customIcon}).bindPopup('Usted está aquí').addTo(map)
+          marker.on('click', follow)
+        }
 
 
         if(line) line.setLatLngs(array)
         else line = L.polyline(array, {color: 'blue'}).addTo(map);
        
-        let followTimer
-        let target
-
-        const follow = (e) => {
-              stop(e)
-              target = e.sourceTarget
-              followTimer = setTimeout(() => map.setView(target._latlng), 1000)
-          } 
-
-        const stop = (e) => {
-           
-            clearTimeout(followTimer);
-            }
-
-        map.on('zoomend', stop)
-        map.on('dragstart', stop)
-        marker.on('click', follow)
-       
+     
         });
 
   }
   setInterval(fetchMessage, 5000) ;
+
+
+  let followTimer
+  let target
+
+  const follow = (e) => {
+        stop(e)
+        target = e.sourceTarget
+        followTimer = setInterval(() => map.setView(target._latlng), 1000)
+    } 
+
+  const stop = e => {
+     
+      clearTimeout(followTimer);
+      }
+
+  map.on('zoomend', stop)
+  map.on('dragstart', stop)
+  
+ 
 
   let time1 = null;
   let time2 = null;
@@ -166,29 +176,32 @@ function fetchMessage() {
           if(pol) pol.setLatLngs(task_names)
         else pol = L.polyline(task_names, {color: 'red'}).addTo(map);
      
-          /* pol = L.polyline(task_names, {color: 'red'}).addTo(map); */
+      
         });
   
     }
 
     let vecth = [];
+    var circle = null;
+
+
+    btn2.addEventListener("click",  function(){
+
+      select = true
+
+    })
 
 
     map.on('click',  function(e) {
+
+      if (select){
+
+  
       let xd = new L.LatLng(e.latlng.lat, e.latlng.lng)
-      
-      /* L.marker([e.latlng.lat,  e.latlng.lng]).bindPopup(`Latitud:  ${e.latlng.lat}, longitud: ${ e.latlng.lng}`).addTo(map); */
     
-      
-   /*   L.popup().setLatLng(xd).setContent('Ubicacion seleccionada').openOn(map); */
      vecth = [e.latlng.lat,e.latlng.lng] 
 
-
-  }); 
-
-  btn2.addEventListener("click", function(){
-
-      
+         
     fetch('/histo2',{
       headers: {
        'Content-Type': 'application/json'
@@ -202,8 +215,10 @@ function fetchMessage() {
 
 
     fetchHisto2()
+    select = false;
+  }
 
-  });
+  }); 
 
 
   function fetchHisto2() {
@@ -215,22 +230,53 @@ function fetchMessage() {
 
       var h2  = json.data;
     
-
-      var task = [];
+       task = [];
+        timestamp = [];
+     
    
       for (var i = 0, max = h2.length; i < max; i += 1) {
     
           task.push([h2[i].latitud,h2[i].longitud]);
+          timestamp.push(h2[i].fecha)
+          
        
       }
 
+      console.log(timestamp)
       console.log(task)
+
+     slider.max = task.length-1 
+     
 
       if(pol2) pol2.setLatLngs(task)
     else pol2 = L.polyline(task, {color: 'purple'}).addTo(map);
 
+    if (circle) circle.setLatLng(vecth) 
+    else circle = L.circle(vecth, {
+      color: 'red',
+      fillColor: '#f03',
+      fillOpacity: 0,
+      radius: 1100
+  }).addTo(map);
+    
+
+    if (marker2) marker2.setLatLng(task[0])
+    else marker2 = L.marker(task[0])
+      .bindPopup(`
+        Fecha: ${new Date(timestamp[0]).toLocaleString('CO')}
+      `).addTo(map)
+     
+
     });
   }
 
-   
+  slider.addEventListener("change", function() {
+
+    marker2.setLatLng(task[slider.value])
+    .bindPopup(`
+      Fecha: ${new Date(timestamp[slider.value]).toLocaleString('CO')}
+    `).addTo(map)
+
+
+  })
 

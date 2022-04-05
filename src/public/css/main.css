@@ -58,6 +58,15 @@ header{
   height: 55%;
   margin: 0.5%;
   border-radius: 1em;
+  position: relative;
+}
+
+#his{
+position: absolute;
+z-index: 9999;
+top: 2rem;
+right: 3rem;
+
 }
 
 #param{
