@@ -185,10 +185,7 @@ function fetchMessage() {
       let xd = new L.LatLng(e.latlng.lat, e.latlng.lng)
       
       L.marker([e.latlng.lat,  e.latlng.lng]).bindPopup(`Latitud:  ${e.latlng.lat}, longitud: ${ e.latlng.lng}`).addTo(map);
-      
-      
-
-     
+    
       console.log(xd)
 
 
