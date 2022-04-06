@@ -118,7 +118,7 @@ app.post("/push",(req,res)=>{
   console.log('xd')
   child_p.exec('git reset --hard')
   child_p.exec('git pull origin master')
-res.sendStatus(200)
+
 })
 
 //hola xd xd xd//
