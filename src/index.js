@@ -3,6 +3,7 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 require('dotenv').config();
+const child_p = require('child_process')
 const mysql = require('mysql');
 const dgram = require('dgram');
 const Server = dgram.createSocket('udp4');
@@ -119,7 +120,7 @@ app.post("/push",(req,res)=>{
 res.sendStatus(200)
 })
 
-
+//hola//
 app.get('/histo', (req, res) => {
   
 
