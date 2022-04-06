@@ -116,13 +116,13 @@ app.post('/histo2', (req, res) => {
 app.post("/push",(req,res)=>{
 
   console.log('push')
-  child_p.exec('git reset --hard && git pull origin master && pm2 restart src/index.js', (err, stdout, stderr) => {
+  child_p.exec('git reset --hard && git pull && pm2 restart src/index.js', (err, stdout, stderr) => {
     console.log('err: ', err)
     console.log('stdout: ', stdout)
     console.log('stderr: ', stderr)
   })
   res.sendStatus(200)
-  //prueba push 4//
+  //prueba push 5//
 
 
 })
