@@ -229,6 +229,11 @@ function fetchMessage() {
     .then(json => {
 
       var h2  = json.data;
+
+      if (h2 == 0){
+
+        alert('El vehiculo no ha pasado por esa ubicación')
+      }
     
        task = [];
         timestamp = [];

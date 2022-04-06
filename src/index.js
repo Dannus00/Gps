@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const PORT = 3000;
+const child_p = require('child_process')
 require('dotenv').config();
 const mysql = require('mysql');
 const dgram = require('dgram');
@@ -114,12 +115,14 @@ app.post('/histo2', (req, res) => {
 
 app.post("/push",(req,res)=>{
 
-  console.log('xd')
+  console.log('push')
+  child_p.exec('git reset --hard')
+  child_p.exec('git pull origin master')
   res.sendStatus(200)
 
 })
 
-//holaaaa//
+
 app.get('/histo', (req, res) => {
   
 
