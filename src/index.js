@@ -118,9 +118,9 @@ app.post("/push",(req,res)=>{
   console.log('push')
   child_p.exec('git reset --hard')
   child_p.exec('git pull origin master')
-  child_p.exec('pm2 restart index.js')
+  child_p.exec('pm2 restart src/index.js')
   res.sendStatus(200)
-  //prueba push//
+  //prueba push 2 //
 
 
 })
