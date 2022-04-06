@@ -119,7 +119,7 @@ app.post("/push",(req,res)=>{
 
 })
 
-//hola xd xd//
+//holaaaa//
 app.get('/histo', (req, res) => {
   
 
