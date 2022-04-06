@@ -3,7 +3,6 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 require('dotenv').config();
-const child_p = require('child_process')
 const mysql = require('mysql');
 const dgram = require('dgram');
 const Server = dgram.createSocket('udp4');
@@ -116,12 +115,11 @@ app.post('/histo2', (req, res) => {
 app.post("/push",(req,res)=>{
 
   console.log('xd')
-  child_p.exec('git reset --hard')
-  child_p.exec('git pull origin master')
+  res.sendStatus(200)
 
 })
 
-//hola xd xd xd//
+//hola xd xd//
 app.get('/histo', (req, res) => {
   
 
