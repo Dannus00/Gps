@@ -117,12 +117,12 @@ app.post("/push",(req,res)=>{
 
   console.log('push')
   child_p.exec('git reset --hard && git pull && pm2 restart src/index.js', (err, stdout, stderr) => {
-    console.log('err: ', err)
+    console.error('err: ', err)
     console.log('stdout: ', stdout)
-    console.log('stderr: ', stderr)
+    console.error('stderr: ', stderr)
   })
   res.sendStatus(200)
-  //prueba push 5//
+  //prueba push //
 
 
 })
