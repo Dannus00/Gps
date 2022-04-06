@@ -2,7 +2,7 @@
  const map = L.map('mape');
  map.setView([10.972990, -74.796790],12);
  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
+var select = false
  
 
 const latitudElement = document.getElementById('latitudValue');
@@ -11,8 +11,12 @@ const direccionElement = document.getElementById('direccionValue');
 const horaElement = document.getElementById('horaValue');
 const fechaElement = document.getElementById('fechaValue');
 let marker = null;
+let marker2 = null;
 let line = null;
 let array = [];
+let slider = document.getElementById('his');
+let task = [];
+let timestamp = [];
 
 function fetchMessage() {
     fetch('/data')
@@ -58,34 +62,40 @@ function fetchMessage() {
         
 
         if (marker) marker.setLatLng(Gps)
-        else marker = L.marker(Gps, {icon: customIcon}).bindPopup('Usted está aquí').addTo(map)
+        else{
+          marker = L.marker(Gps, {icon: customIcon}).bindPopup('Usted está aquí').addTo(map)
+          marker.on('click', follow)
+        }
 
 
         if(line) line.setLatLngs(array)
         else line = L.polyline(array, {color: 'blue'}).addTo(map);
        
-        let followTimer
-        let target
-
-        const follow = (e) => {
-              stop(e)
-              target = e.sourceTarget
-              followTimer = setTimeout(() => map.setView(target._latlng), 1000)
-          } 
-
-        const stop = (e) => {
-           
-            clearTimeout(followTimer);
-            }
-
-        map.on('zoomend', stop)
-        map.on('dragstart', stop)
-        marker.on('click', follow)
-       
+     
         });
 
   }
   setInterval(fetchMessage, 5000) ;
+
+
+  let followTimer
+  let target
+
+  const follow = (e) => {
+        stop(e)
+        target = e.sourceTarget
+        followTimer = setInterval(() => map.setView(target._latlng), 1000)
+    } 
+
+  const stop = e => {
+     
+      clearTimeout(followTimer);
+      }
+
+  map.on('zoomend', stop)
+  map.on('dragstart', stop)
+  
+ 
 
   let time1 = null;
   let time2 = null;
@@ -93,7 +103,9 @@ function fetchMessage() {
   let date = null
   let hi =[];
   let pol = null;
-  const btn = document.querySelector("button");
+  let pol2 = null;
+  const btn = document.getElementById("boton");
+  const btn2 = document.getElementById("boton2");
   
   document.getElementById("calendar").addEventListener("change", function() {
       let input = this.value;
@@ -112,7 +124,7 @@ function fetchMessage() {
   
   
   
-    btn.addEventListener("click", async function(){
+    btn.addEventListener("click",  function(){
       if (time1 == null || time2 == null) {
 
        alert('Por favor ingresar fechas')
@@ -133,18 +145,7 @@ function fetchMessage() {
            body: JSON.stringify(date)
   
   
-      }).then(res => res.json())
-      .then(res => {
-        if (res.success) {
-          //mensaje correcto
-          
-        }else{
-        //mensaje de error
-        }
       })
-      .catch(function() {
-        console.log("tienes tremendo error papu");
-      });
   
       fetchHisto();
       
@@ -173,24 +174,107 @@ function fetchMessage() {
           console.log(task_names)
   
           if(pol) pol.setLatLngs(task_names)
-        else pol = L.polyline(task_names, {color: 'blue'}).addTo(map);
+        else pol = L.polyline(task_names, {color: 'red'}).addTo(map);
      
-          /* pol = L.polyline(task_names, {color: 'red'}).addTo(map); */
+      
         });
   
     }
 
+    let vecth = [];
+    var circle = null;
 
-    map.on('click', function(e) {
+
+    btn2.addEventListener("click",  function(){
+
+      select = true
+
+    })
+
+
+    map.on('click',  function(e) {
+
+      if (select){
+
+  
       let xd = new L.LatLng(e.latlng.lat, e.latlng.lng)
-      
-      L.marker([e.latlng.lat,  e.latlng.lng]).bindPopup(`Latitud:  ${e.latlng.lat}, longitud: ${ e.latlng.lng}`).addTo(map);
     
-      console.log(xd)
+     vecth = [e.latlng.lat,e.latlng.lng] 
 
+         
+    fetch('/histo2',{
+      headers: {
+       'Content-Type': 'application/json'
+
+      },
+      method: 'POST',
+      body: JSON.stringify(vecth)
+
+
+    })
+
+
+    fetchHisto2()
+    select = false;
+  }
 
   }); 
 
 
+  function fetchHisto2() {
+    fetch('/api2')
+    .then(response => {
+      return response.json();
+    })
+    .then(json => {
+
+      var h2  = json.data;
+    
+       task = [];
+        timestamp = [];
+     
    
+      for (var i = 0, max = h2.length; i < max; i += 1) {
+    
+          task.push([h2[i].latitud,h2[i].longitud]);
+          timestamp.push(h2[i].fecha)
+          
+       
+      }
+
+      
+     slider.max = task.length-1 
+     
+
+      if(pol2) pol2.setLatLngs(task)
+    else pol2 = L.polyline(task, {color: 'purple'}).addTo(map);
+
+    /* if (circle) circle.setLatLng(vecth) 
+    else circle = L.circle(vecth, {
+      color: 'red',
+      fillColor: '#f03',
+      fillOpacity: 0,
+      radius: 1100
+  }).addTo(map); */
+    
+
+    if (marker2) marker2.setLatLng(task[0])
+    else marker2 = L.marker(task[0])
+      .bindPopup(`
+        Fecha: ${new Date(timestamp[0]).toLocaleString('CO')}
+      `).addTo(map)
+     
+
+    });
+  }
+
+  slider.addEventListener("change", function() {
+
+    marker2.setLatLng(task[slider.value])
+    .bindPopup(`
+      Fecha: ${new Date(timestamp[slider.value]).toLocaleString('CO')}
+    `).addTo(map)
+
+
+  })
 

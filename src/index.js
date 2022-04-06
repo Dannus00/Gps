@@ -14,7 +14,8 @@ const bodyparser = require('body-parser');
 
 let fini = 0;
 let fifin = 0;
-
+let lath = 0;
+let longh = 0;
 
 app.use(bodyparser.urlencoded({extended: false}));
 app.use(bodyparser.json());
@@ -90,6 +91,7 @@ app.post('/api',(req,res)=>{
 
     fini = req.body[0]
     fifin = req.body[1]
+    res.sendStatus(200)
 
    
     
@@ -101,9 +103,19 @@ app.post('/api',(req,res)=>{
 
 });
 
+app.post('/histo2', (req, res) => {
+
+  lath = req.body[0]
+  longh = req.body[1]
+  res.sendStatus(200)
+
+
+}); 
+
 app.post("/push",(req,res)=>{
 
-console.log("push")
+  child_p.exec('git reset --hard')
+  child_p.exec('git pull origin master')
 res.sendStatus(200)
 })
 
@@ -121,6 +133,21 @@ app.get('/histo', (req, res) => {
      });
     
     })
+
+});
+
+app.get('/api2', (req,res)=>{
+
+  con.query(`select * from Datos where (latitud - '${lath}')*(latitud - '${lath}') + (longitud - ('${longh}'))*(longitud - ('${longh}')) < 0.0001 ORDER BY id`,(err,mesh2, fields)=>{
+    
+      res.status(200).json({
+        data: mesh2,
+      
+      
+     });
+    
+    })
+
 
 });
 
