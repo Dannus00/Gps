@@ -52,7 +52,7 @@ header{
   border: solid black ;
   text-align: center;
   color: brown;
-  grid-template-columns: 1fr 1fr 1fr;
+  
 }
 #principal{
   height: 55%;
@@ -135,3 +135,17 @@ button:hover{
   font-size: 1.3em;
 
 }
+
+a{
+  font-weight: bold;
+  font-size: 18px;
+
+  margin: 0.5%;
+
+}
+a:hover{
+ 
+  COLOR: rgb(96, 98, 228) 
+
+}
+
