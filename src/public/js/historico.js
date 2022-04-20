@@ -72,31 +72,58 @@ let time2 = null;
   
           hi  = json.data;
           console.log(hi)
-          
-          
-          var task_names = [];
+          /*cambios*/
+          timestamp = [];
+          task = [];
    
           for (var i = 0, max = hi.length; i < max; i += 1) {
            
-              task_names.push([hi[i].latitud,hi[i].longitud]);
+              task.push([hi[i].latitud,hi[i].longitud]);
+              timestamp.push(hi[i].fecha)
            
           }
+          console.log(timestamp)
+          console.log(task)
   
-          console.log(task_names)
-  
-          if(pol) pol.setLatLngs(task_names)
-        else pol = L.polyline(task_names, {color: 'red'}).addTo(map);
-     
+          if(pol) pol.setLatLngs(task)
+        else pol = L.polyline(task, {color: 'red'}).addTo(map);
+
+
+
+        slider.max = task.length-1 
+        
+        if(marker2) marker2.setLatLngs(task[0])
+        else marker2 = L.marker(task[0]).bindPopup( `
+        Fecha: ${new Date(timestamp[0]).toLocaleString('CO')}
+      `).addTo(map);
+
+      /*   if (marker2) marker2.setLatLng(task[0])
+        else marker2 = L.popup(task_names[0])
+          .setContent( `
+          Fecha: ${new Date(timestamp[0]).toLocaleString('CO')}
+        `).addTo(map)  */
+
+         
       
         });
   
     }
 
+    slider.addEventListener("change", function() {
+
+      marker2.setLatLng(task[slider.value])
+      .bindPopup( `
+          Fecha: ${new Date(timestamp[slider.value]).toLocaleString('CO')}
+        `).addTo(map)
+  
+  
+    })
+
     let vecth = [];
     var circle = null;
 
 
-    btn2.addEventListener("click",  function(){
+   /*  btn2.addEventListener("click",  function(){
 
       select = true
 
@@ -187,4 +214,4 @@ let time2 = null;
 
 
   })
-
+ */

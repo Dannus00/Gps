@@ -104,14 +104,14 @@ app.post('/api',(req,res)=>{
 
 });
 
-app.post('/histo2', (req, res) => {
+/* app.post('/histo2', (req, res) => {
 
   lath = req.body[0]
   longh = req.body[1]
   res.sendStatus(200)
 
 
-}); 
+});  */
 
 app.post("/push",(req,res)=>{
 
@@ -131,7 +131,7 @@ app.post("/push",(req,res)=>{
 app.get('/histo', (req, res) => {
   
 
-  con.query(`SELECT latitud,longitud FROM Datos
+  con.query(`SELECT * FROM Datos
   WHERE fecha BETWEEN '${fini}' AND '${fifin}'  ORDER BY id`,(err,mesh, fields)=>{
     
       res.status(200).json({
@@ -144,7 +144,7 @@ app.get('/histo', (req, res) => {
 
 });
 
-app.get('/api2', (req,res)=>{
+/* app.get('/api2', (req,res)=>{
 
   con.query(`select * from Datos where (latitud - '${lath}')*(latitud - '${lath}') + (longitud - ('${longh}'))*(longitud - ('${longh}')) < 0.0001 ORDER BY id`,(err,mesh2, fields)=>{
     
@@ -157,7 +157,7 @@ app.get('/api2', (req,res)=>{
     })
 
 
-});
+}); */
 
 
 
