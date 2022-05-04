@@ -33,7 +33,7 @@ function fetchMessage() {
 
         if (rpm == null){
 
-          rpmElement.innerHTML = "Deviece not connected";
+          rpmElement.innerHTML = "Device not connected";
         }else{
           rpmElement.innerHTML = rpm ;  
            
