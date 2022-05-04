@@ -15,8 +15,7 @@ const bodyparser = require('body-parser');
 
 let fini = 0;
 let fifin = 0;
-let lath = 0;
-let longh = 0;
+
 
 app.use(bodyparser.urlencoded({extended: false}));
 app.use(bodyparser.json());
@@ -50,9 +49,9 @@ Server.on('message', (msg, rinfo) => {
       const value = element.split(': ')[1];
       arrayValues.push(value);
     });
-    const [latitud, longitud, direccion,fecha] = arrayValues;
+    const [latitud, longitud, direccion,fecha,rpm] = arrayValues;
 
-    var sql = `INSERT INTO Datos (latitud,longitud,direccion,fecha) VALUES ('${latitud}', '${longitud}', '${direccion}','${fecha}')`;  
+    var sql = `INSERT INTO Datos (latitud,longitud,direccion,fecha,rpm) VALUES ('${latitud}', '${longitud}', '${direccion}','${fecha}','${rpm}')`;  
       con.query(sql, function (err, result) {  
         if (err) throw err;  
         console.log("Localizacion Guardada");  
@@ -104,14 +103,7 @@ app.post('/api',(req,res)=>{
 
 });
 
-/* app.post('/histo2', (req, res) => {
 
-  lath = req.body[0]
-  longh = req.body[1]
-  res.sendStatus(200)
-
-
-});  */
 
 app.post("/push",(req,res)=>{
 
@@ -122,7 +114,7 @@ app.post("/push",(req,res)=>{
     console.error('stderr: ', stderr)
   })
   res.sendStatus(200)
-  //pruebaFinal//
+
 
 
 })
@@ -144,20 +136,7 @@ app.get('/histo', (req, res) => {
 
 });
 
-/* app.get('/api2', (req,res)=>{
 
-  con.query(`select * from Datos where (latitud - '${lath}')*(latitud - '${lath}') + (longitud - ('${longh}'))*(longitud - ('${longh}')) < 0.0001 ORDER BY id`,(err,mesh2, fields)=>{
-    
-      res.status(200).json({
-        data: mesh2,
-      
-      
-     });
-    
-    })
-
-
-}); */
 
 
 

@@ -10,6 +10,7 @@ const longitudElement = document.getElementById('longitudValue');
 const direccionElement = document.getElementById('direccionValue');
 const horaElement = document.getElementById('horaValue');
 const fechaElement = document.getElementById('fechaValue');
+const rpmElement = document.getElementById('rpmValue');
 let marker = null;
 let marker2 = null;
 let line = null;
@@ -25,10 +26,19 @@ function fetchMessage() {
       })
       .then(json => {
 
-        const {longitud, latitud, direccion,fecha}   = json.data;
+        const {longitud, latitud, direccion,fecha,rpm}   = json.data;
         latitudElement.innerText = latitud;
         longitudElement.innerHTML = longitud;
         direccionElement.innerHTML = direccion;
+
+        if (rpm == null){
+
+          rpmElement.innerHTML = "Deviece not connected";
+        }else{
+          rpmElement.innerHTML = rpm ;  
+           
+        }
+
 
         const opciones = {
           weekday: 'long',
