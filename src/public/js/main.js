@@ -31,7 +31,7 @@ function fetchMessage() {
         longitudElement.innerHTML = longitud;
         direccionElement.innerHTML = direccion;
 
-        if (rpm == null){
+        if (rpm == null && rpm == 0){
 
           rpmElement.innerHTML = "Device not connected";
         }else{
