@@ -49,9 +49,9 @@ Server.on('message', (msg, rinfo) => {
       const value = element.split(': ')[1];
       arrayValues.push(value);
     });
-    const [latitud, longitud, direccion,fecha,rpm] = arrayValues;
+    const [latitud, longitud, direccion,fecha,rpm,id_placa] = arrayValues;
 
-    var sql = `INSERT INTO Datos (latitud,longitud,direccion,fecha,rpm) VALUES ('${latitud}', '${longitud}', '${direccion}','${fecha}','${rpm}')`;  
+    var sql = `INSERT INTO Datos (latitud,longitud,direccion,fecha,rpm,id_placa) VALUES ('${latitud}', '${longitud}', '${direccion}','${fecha}','${rpm}','${id_placa}')`;  
       con.query(sql, function (err, result) {  
         if (err) throw err;  
         console.log("Localizacion Guardada");  
@@ -71,11 +71,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-
+//====== Taxi 1 ================//
 app.get('/data', (req, res) => {
   
 
-  con.query('select * from Datos ORDER BY id DESC LIMIT 1',(err,mess, fields)=>{
+  con.query('select * from Datos where id_placa = 1 ORDER BY id DESC LIMIT 1 ',(err,mess, fields)=>{
     
       res.status(200).json({
       data: mess[0],
@@ -86,6 +86,24 @@ app.get('/data', (req, res) => {
     })
 
 });
+
+//====== Taxi 2 ================//
+app.get('/data2', (req, res) => {
+  
+
+  con.query('select * from Datos where id_placa = 2 ORDER BY id DESC LIMIT 1 ',(err,mess2, fields)=>{
+    
+      res.status(200).json({
+      data: mess2[0],
+      
+      
+    });
+    
+    })
+
+});
+
+
 
 app.post('/api',(req,res)=>{
 

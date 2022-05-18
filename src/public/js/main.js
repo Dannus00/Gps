@@ -14,10 +14,13 @@ const rpmElement = document.getElementById('rpmValue');
 let marker = null;
 let marker2 = null;
 let line = null;
+let line2 = null;
 let array = [];
+let array2 = [];
 let slider = document.getElementById('his');
 let task = [];
 let timestamp = [];
+
 
 function fetchMessage() {
     fetch('/data')
@@ -26,18 +29,7 @@ function fetchMessage() {
       })
       .then(json => {
 
-        const {longitud, latitud, direccion,fecha,rpm}   = json.data;
-        latitudElement.innerText = latitud;
-        longitudElement.innerHTML = longitud;
-        direccionElement.innerHTML = direccion;
-
-        if (rpm == null || rpm == 0){
-
-          rpmElement.innerHTML = "Device not connected";
-        }else{
-          rpmElement.innerHTML = rpm ;  
-           
-        }
+        const {longitud, latitud, direccion,fecha,rpm,id_placa}   = json.data;
 
 
         const opciones = {
@@ -73,7 +65,8 @@ function fetchMessage() {
 
         if (marker) marker.setLatLng(Gps)
         else{
-          marker = L.marker(Gps, {icon: customIcon}).bindPopup('Usted está aquí').addTo(map)
+          marker = L.marker(Gps, {icon: customIcon}).bindPopup('Placa : DHL487'+ '\nLatitud: ' + latitud
+          + '\nLongitud: ' + longitud + '\nFecha: ' + fechaFormateada + '\nHora: ' + result + '\nRpm: ' + rpm).addTo(map)
           marker.on('click', follow)
         }
 
@@ -88,6 +81,81 @@ function fetchMessage() {
   setInterval(fetchMessage, 5000) ;
 
 
+
+
+  //=====================================================================//
+  function fetchMessage2() {
+    fetch('/data2')
+      .then(response => {
+        return response.json();
+      })
+      .then(json => {
+
+        const {longitud, latitud, direccion,fecha,rpm,id_placa}   = json.data;
+        latitudElement.innerText = latitud;
+        longitudElement.innerHTML = longitud;
+        direccionElement.innerHTML = direccion;
+
+        if (rpm == null || rpm == 0){
+
+          rpmElement.innerHTML = "Device not connected";
+        }else{
+          rpmElement.innerHTML = rpm ;  
+           
+        }
+
+
+        const opciones = {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          timeZone: 'UTC'
+        };
+
+       var fech = new Date(fecha)
+      
+      var fechaFormateada = fech.toLocaleDateString("es-CO", opciones);
+      var result = fech.toLocaleTimeString('en-US')
+        horaElement.innerHTML = result; 
+        fechaElement.innerHTML= fechaFormateada; 
+    
+     
+    
+        let Gps = new L.LatLng(latitud, longitud)
+        array2.push(Gps);
+
+       
+        var customIcon = new L.Icon({
+                iconUrl: '/js/view/coche-de-turismo.png',
+                iconSize: [40, 40],
+                
+                
+                
+            });
+
+        
+
+        if (marker2) marker2.setLatLng(Gps)
+        else{
+          marker2 = L.marker(Gps, {icon: customIcon}).bindPopup('Placa : MJD123'+ '\nLatitud: ' + latitud
+          + '\nLongitud: ' + longitud + '\nFecha: ' + fechaFormateada + '\nHora: ' + result + '\nRpm: ' + rpm).addTo(map)
+          marker2.on('click', follow)
+        }
+
+
+        if(line2) line2.setLatLngs(array2)
+        else line2 = L.polyline(array2, {color: 'Purple'}).addTo(map);
+       
+     
+        });
+
+  }
+  setInterval(fetchMessage2, 5000) ;
+
+
+
+//==================================================================================//
   let followTimer
   let target
 
