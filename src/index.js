@@ -15,6 +15,7 @@ const bodyparser = require('body-parser');
 
 let fini = 0;
 let fifin = 0;
+let placa = 0;
 
 
 app.use(bodyparser.urlencoded({extended: false}));
@@ -109,15 +110,8 @@ app.post('/api',(req,res)=>{
 
     fini = req.body[0]
     fifin = req.body[1]
+    placa = req.body[2]
     res.sendStatus(200)
-
-   
-    
-
-  
-
-
-
 
 });
 
@@ -142,7 +136,7 @@ app.get('/histo', (req, res) => {
   
 
   con.query(`SELECT * FROM Datos
-  WHERE fecha BETWEEN '${fini}' AND '${fifin}'  ORDER BY id`,(err,mesh, fields)=>{
+  WHERE fecha BETWEEN '${fini}' AND '${fifin}' AND id_placa = '${placa}' ORDER BY id`,(err,mesh, fields)=>{
     
       res.status(200).json({
         data: mesh,

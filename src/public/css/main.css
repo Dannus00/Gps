@@ -29,7 +29,7 @@ input{
 }
 label{
   text-align: center;
-  color: blueviolet;
+  color: blue;
   font-weight: bold;
 }
 header{
@@ -90,13 +90,16 @@ right: 3rem;
 }
 
 .dive{
+  position: relative;
  background-color: gainsboro;
- color: blueviolet;
- border: 1px solid black;
+ color: black;
+ border: 1px solid blueviolet;
  font-weight: bold;
- margin-bottom: 3%;
- margin-left: 3%;
- margin-right: 3%;
+ margin-left: 5%;
+ left: 50%;
+ font:caption;
+ font-size: 15px;
+ 
 
 }
 

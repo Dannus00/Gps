@@ -6,8 +6,8 @@ let slider = document.getElementById('his');
 let marker2 = null;
 let task = [];
 let timestamp = [];
-
-
+let placa = null;
+const fechaElement = document.getElementById('fechaValue');
 let time1 = null;
 let time2 = null;
 
@@ -33,17 +33,29 @@ let time2 = null;
       
     });
   
+  document.getElementById("dropdown").addEventListener("change", function(){
+      placa = this.value;
+      console.log(placa);
+
+
+  });
   
   
     btn.addEventListener("click",  function(){
-      if (time1 == null || time2 == null) {
 
-       alert('Por favor ingresar fechas')
+    if(placa == null || placa == 0 ){
+
+      alert('Seleccione su vehiculo')
+    }else if(time1 == null || time2 == null){
+
+      alert('Por favor ingresar fechas')
 
     } else if (time1 > time2) {
       alert('La fecha inicial es mayor a la fecha final, por favor corrija las fechas. ')
+    }else{
+      date = [time1, time2,placa];
     }
-      date = [time1, time2];
+      
 
 
     
@@ -107,8 +119,9 @@ let time2 = null;
       .bindPopup( `
           Fecha: ${new Date(timestamp[slider.value]).toLocaleString('CO')}
         `).addTo(map)
-  
-  
+     
+        fechaElement.innerHTML= new Date(timestamp[slider.value]).toLocaleString('CO'); 
+       
     })
 
     let vecth = [];

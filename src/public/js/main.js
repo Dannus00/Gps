@@ -7,10 +7,18 @@ var select = false
 
 const latitudElement = document.getElementById('latitudValue');
 const longitudElement = document.getElementById('longitudValue');
-const direccionElement = document.getElementById('direccionValue');
 const horaElement = document.getElementById('horaValue');
 const fechaElement = document.getElementById('fechaValue');
 const rpmElement = document.getElementById('rpmValue');
+
+
+const latitudElement1 = document.getElementById('latitudValue1');
+const longitudElement1 = document.getElementById('longitudValue1');
+const horaElement1 = document.getElementById('horaValue1');
+const fechaElement1 = document.getElementById('fechaValue1');
+const rpmElement1 = document.getElementById('rpmValue1');
+
+
 let marker = null;
 let marker2 = null;
 let line = null;
@@ -30,7 +38,17 @@ function fetchMessage() {
       .then(json => {
 
         const {longitud, latitud, direccion,fecha,rpm,id_placa}   = json.data;
+        latitudElement.innerText = latitud;
+        longitudElement.innerHTML = longitud;
+      
 
+        if (rpm == null || rpm == 0){
+
+          rpmElement.innerHTML = "Device not connected";
+        }else{
+          rpmElement.innerHTML = rpm ;  
+           
+        }
 
         const opciones = {
           weekday: 'long',
@@ -65,8 +83,7 @@ function fetchMessage() {
 
         if (marker) marker.setLatLng(Gps)
         else{
-          marker = L.marker(Gps, {icon: customIcon}).bindPopup('Placa : DHL487'+ '\nLatitud: ' + latitud
-          + '\nLongitud: ' + longitud + '\nFecha: ' + fechaFormateada + '\nHora: ' + result + '\nRpm: ' + rpm).addTo(map)
+          marker = L.marker(Gps, {icon: customIcon}).bindPopup('Placa : DHL487').addTo(map)
           marker.on('click', follow)
         }
 
@@ -92,15 +109,14 @@ function fetchMessage() {
       .then(json => {
 
         const {longitud, latitud, direccion,fecha,rpm,id_placa}   = json.data;
-        latitudElement.innerText = latitud;
-        longitudElement.innerHTML = longitud;
-        direccionElement.innerHTML = direccion;
-
+        latitudElement1.innerText = latitud;
+        longitudElement1.innerHTML = longitud;
+   
         if (rpm == null || rpm == 0){
 
-          rpmElement.innerHTML = "Device not connected";
+          rpmElement1.innerHTML = "Device not connected";
         }else{
-          rpmElement.innerHTML = rpm ;  
+          rpmElement1.innerHTML = rpm ;  
            
         }
 
@@ -117,8 +133,8 @@ function fetchMessage() {
       
       var fechaFormateada = fech.toLocaleDateString("es-CO", opciones);
       var result = fech.toLocaleTimeString('en-US')
-        horaElement.innerHTML = result; 
-        fechaElement.innerHTML= fechaFormateada; 
+        horaElement1.innerHTML = result; 
+        fechaElement1.innerHTML= fechaFormateada; 
     
      
     
@@ -138,8 +154,7 @@ function fetchMessage() {
 
         if (marker2) marker2.setLatLng(Gps)
         else{
-          marker2 = L.marker(Gps, {icon: customIcon}).bindPopup('Placa : MJD123'+ '\nLatitud: ' + latitud
-          + '\nLongitud: ' + longitud + '\nFecha: ' + fechaFormateada + '\nHora: ' + result + '\nRpm: ' + rpm).addTo(map)
+          marker2 = L.marker(Gps, {icon: customIcon}).bindPopup('Placa : MJD123').addTo(map)
           marker2.on('click', follow)
         }
 

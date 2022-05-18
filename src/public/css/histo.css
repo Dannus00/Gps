@@ -14,6 +14,9 @@
     background-color: blueviolet;
    }
   
+  
+
+
   h1{
     text-align: center;
     color: blueviolet;
@@ -118,17 +121,30 @@
   }
   
   button{
+    position: relative;
     font-weight: bold;
     width: auto;
     margin: 0.5%;
-    
+    left: 95%;
     border-radius: 10px;
     background-color: blueviolet;
+    
   }
   button:hover{
     background-color: rgb(109, 240, 126);
   }
   
+  #dive{
+    background-color: gainsboro;
+    color: blueviolet;
+    border: 1px solid black;
+    font-weight: bold;
+    margin-left: 3%;
+    margin-right: 3%;
+    margin-top: 1%;
+    margin-bottom:5%;
+   
+   }
   #ruta{
    
     font-size: 1.3em;
