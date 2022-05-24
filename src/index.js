@@ -133,10 +133,11 @@ app.post("/push",(req,res)=>{
 
 
 app.get('/histo', (req, res) => {
-  
 
+  let {time1,time2,placa} = req.query
+ 
   con.query(`SELECT * FROM Datos
-  WHERE fecha BETWEEN '${fini}' AND '${fifin}' AND id_placa = '${placa}' ORDER BY id`,(err,mesh, fields)=>{
+  WHERE fecha BETWEEN '${time1}' AND '${time2}' AND id_placa = '${placa}' ORDER BY id`,(err,mesh, fields)=>{
     
       res.status(200).json({
         data: mesh,
