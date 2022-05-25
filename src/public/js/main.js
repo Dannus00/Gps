@@ -95,7 +95,7 @@ function fetchMessage() {
         });
 
   }
-  setInterval(fetchMessage, 5000) ;
+  setInterval(fetchMessage, 1000) ;
 
 
 
@@ -166,7 +166,7 @@ function fetchMessage() {
         });
 
   }
-  setInterval(fetchMessage2, 5000) ;
+  setInterval(fetchMessage2, 1000) ;
 
 
 

@@ -8,10 +8,15 @@ let marker2 = null;
 let marker3 = null;
 let task = [];
 let timestamp = [];
+let rpm = [];
+let rpm2 = [];
 let task2 = [];
 let timestamp2 = [];
 let placa = null;
 const fechaElement = document.getElementById('fechaValue');
+const fechaElement2 = document.getElementById('fechaValue2');
+const rpmElement = document.getElementById('rpmValue');
+const rpmElement2 = document.getElementById('rpmValue2');
 let time1 = null;
 let time2 = null;
 
@@ -25,6 +30,7 @@ const btn2 = document.getElementById("boton2");
 document.getElementById("calendar").addEventListener("change", function () {
   let input = this.value;
   time1 = Date.parse(input)
+  document.getElementById("calendarF").min=this.value
 
 
 
@@ -33,6 +39,7 @@ document.getElementById("calendar").addEventListener("change", function () {
 document.getElementById("calendarF").addEventListener("change", function () {
   let input2 = this.value;
   time2 = Date.parse(input2)
+  document.getElementById("calendar").max=this.value
 
 
 });
@@ -80,33 +87,40 @@ btn.addEventListener("click", function () {
 
 
 async function fetchHisto() {
-  if (placa != 3) {
+
+/*========================   placa 1* ============================*/
+  if (placa == 1) {
 
     try{
     map.removeLayer(marker3)
     map.removeLayer(pol2)
+    map.addLayer(marker2)
+    map.addLayer(pol)
     }catch(e){}
 
-
+    slider2.disabled = true;
+    slider.disabled = false;
     let response = await fetch(`/histo?time1=${time1}&time2=${time2}&placa=${placa}`)
     let json = await response.json();
 
     hi = json.data;
-    console.log(hi)
+  
     /*cambios*/
     timestamp = [];
     task = [];
     timestamp2 = [];
     task2 = [];
+    rpm = [];
+    rpm2 = [];
 
     for (var i = 0, max = hi.length; i < max; i += 1) {
 
       task.push([hi[i].latitud, hi[i].longitud]);
       timestamp.push(hi[i].fecha)
+      rpm.push(hi[i].rpm)
 
     }
-    console.log(timestamp)
-    console.log(task)
+    console.log(rpm)
 
     if (pol) pol.setLatLngs(task)
     else pol = L.polyline(task, { color: 'red' }).addTo(map);
@@ -118,12 +132,66 @@ async function fetchHisto() {
         Fecha: ${new Date(timestamp[0]).toLocaleString('CO')}
       `).addTo(map);
 
-  } else {
+  }/*========================   placa 2* ============================*/
+  if (placa == 2) { 
+  
+    try{
+      map.removeLayer(marker2)
+      map.removeLayer(pol)
+      map.addLayer(marker3)
+      map.addLayer(pol2)
+      }catch(e){}
+
+      slider2.disabled = false;
+      slider.disabled = true;
+  
+  
+      let response = await fetch(`/histo?time1=${time1}&time2=${time2}&placa=${placa}`)
+      let json = await response.json();
+
+   timestamp = [];
+    task = [];
+    timestamp2 = [];
+    task2 = [];
+    rpm = [];
+    rpm2 = [];
+      
+    for (var i = 0, max = json.data.length; i < max; i += 1) {
+
+      task2.push([json.data[i].latitud, json.data[i].longitud]);
+      timestamp2.push(json.data[i].fecha)
+      rpm2.push(json.data[i].rpm)
+
+    }
+    console.log(timestamp2)
+    console.log(task2)
+
+    if (pol2) pol2.setLatLngs(task2)
+    else pol2 = L.polyline(task2, { color: 'blue' }).addTo(map);
+
+    slider2.max = task2.length - 1
+
+    if (marker3) marker3.setLatLngs(task2[0])
+    else marker3 = L.marker(task2[0]).bindPopup(`
+        Fecha: ${new Date(timestamp2[0]).toLocaleString('CO')}
+      `).addTo(map);
+
+
+
+
+
+
+  /*========================   Ambas placas ============================*/
+   }if(placa == 3) {
 
     try{
       map.addLayer(marker3)
       map.addLayer(pol2)
+      map.addLayer(marker2)
+      map.addLayer(pol)
 
+      slider2.disabled = false;
+      slider.disabled = false;
 
     }catch(e){}
     let response1 = await fetch(`/histo?time1=${time1}&time2=${time2}&placa=${1}`)
@@ -137,12 +205,15 @@ async function fetchHisto() {
     task = [];
     timestamp2 = [];
     task2 = [];
-
+    rpm = [];
+    rpm2 = [];
 
     for (var i = 0, max = json1.data.length; i < max; i += 1) {
 
       task.push([json1.data[i].latitud, json1.data[i].longitud]);
       timestamp.push(json1.data[i].fecha)
+      rpm.push(json1.data[i].rpm)
+
 
     }
     console.log(timestamp)
@@ -154,7 +225,7 @@ async function fetchHisto() {
     slider.max = task.length - 1
     
 
-    if (marker2) marker2.setLatLngs(task[0])
+    if (marker2) marker2.setLatLng(task[0])
     else marker2 = L.marker(task[0]).bindPopup(`
         Fecha: ${new Date(timestamp[0]).toLocaleString('CO')}
       `).addTo(map);
@@ -165,6 +236,8 @@ async function fetchHisto() {
 
         task2.push([json2.data[i].latitud, json2.data[i].longitud]);
         timestamp2.push(json2.data[i].fecha)
+        rpm2.push(json2.data[i].rpm)
+        
   
       }
       console.log(timestamp2)
@@ -192,6 +265,12 @@ slider.addEventListener("change", function () {
         `).addTo(map)
 
   fechaElement.innerHTML = new Date(timestamp[slider.value]).toLocaleString('CO');
+  if (rpm[slider.value] == null || rpm[slider.value]  == 0 ){
+    rpmElement.innerHTML = ('Device not connected')
+  }else{
+
+    rpmElement.innerHTML = (rpm[slider.value])
+  }
 
 })
 
@@ -202,7 +281,13 @@ slider2.addEventListener("change", function () {
           Fecha: ${new Date(timestamp2[slider2.value]).toLocaleString('CO')}
         `).addTo(map)
 
-  fechaElement.innerHTML = new Date(timestamp2[slider2.value]).toLocaleString('CO');
+  fechaElement2.innerHTML = new Date(timestamp2[slider2.value]).toLocaleString('CO');
+  if (rpm2[slider2.value] == null || rpm2[slider2.value]  == 0 ){
+    rpmElement2.innerHTML = ('Device not connected')
+  }else{
+
+    rpmElement2.innerHTML = (rpm2[slider2.value])
+  }
 
 })
 

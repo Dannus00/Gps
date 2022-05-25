@@ -106,10 +106,16 @@ header {
 }
 
 .dive {
-  background-color: gainsboro;
+  background-color: white;
   color: blueviolet;
   border: 1px solid black;
   font-weight: bold;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px black;
+  margin-left: 3%;
+  margin-right: 3%;
+  margin-top: 1%;
+  margin-bottom: 5%;
 }
 
 #mape {
@@ -124,6 +130,8 @@ header {
   margin: 0.5%;
   width: 100%;
   padding: 1px 5px;
+  border-radius: 10px;
+ 
 }
 
 #c2 {
@@ -150,17 +158,6 @@ button:hover {
   background-color: rgb(109, 240, 126);
 }
 
-#dive {
-  background-color: gainsboro;
-  color: blueviolet;
-  border: 1px solid black;
-  font-weight: bold;
-  margin-left: 3%;
-  margin-right: 3%;
-  margin-top: 1%;
-  margin-bottom: 5%;
-
-}
 
 #ruta {
 
